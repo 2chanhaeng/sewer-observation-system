@@ -8,7 +8,7 @@ class Sewer(models.Model):
     remark = models.CharField(max_length=255, verbose_name="위치정보")
 
     def __str__(self):
-        return f"Sewer {self.idn} ({self.remark})"
+        return f"Sewer {self.gubn_nam} ({self.remark})"
 
 
 class Sewage(models.Model):
@@ -18,7 +18,7 @@ class Sewage(models.Model):
     sig_sta = models.CharField(max_length=8, verbose_name="통신상태")
 
     def __str__(self):
-        return f"Sewage data of {self.sewer.idn} at {self.mea_ymd}"
+        return f"Sewage data of {self.sewer} at {self.mea_ymd}"
 
 
 class Rainguage(models.Model):
