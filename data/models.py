@@ -29,3 +29,12 @@ class Rainguage(models.Model):
 
     def __str__(self):
         return f"Rainguage {self.rainguage_code} ({self.rainguage_name})"
+
+
+class Rainfall(models.Model):
+    rainguage = models.ForeignKey(Rainguage, on_delete=models.CASCADE, verbose_name="강우량계")
+    rainfall10 = models.FloatField(verbose_name="10분우량")
+    recieve_time = models.DateTimeField(verbose_name="자료수집 시각")
+
+    def __str__(self):
+        return f"Rainfall data of {self.rainguage} at {self.recieve_time}"
