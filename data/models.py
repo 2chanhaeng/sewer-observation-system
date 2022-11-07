@@ -19,3 +19,13 @@ class Sewage(models.Model):
 
     def __str__(self):
         return f"Sewage data of {self.sewer.idn} at {self.mea_ymd}"
+
+
+class Rainguage(models.Model):
+    rainguage_code = models.SmallIntegerField(verbose_name="강우량계 코드")
+    rainguage_name = models.CharField(max_length=8, verbose_name="강우량계명")
+    gu_code = models.SmallIntegerField(verbose_name="구청 코드")
+    gu_name = models.CharField(max_length=8, verbose_name="구청명")
+
+    def __str__(self):
+        return f"Rainguage {self.rainguage_code} ({self.rainguage_name})"
