@@ -72,16 +72,19 @@ class Command(BaseCommand):
                 for idn, gubn, gubn_nam, mea_ymd, remark, mea_wal, sig_sta in reader:
                     try:
                         if prev_day == 0:
-                            self.stdout.write(" ".join([
-                                idn,
-                                gubn,
-                                gubn_nam,
-                                mea_ymd,
-                                remark,
-                                mea_wal,
-
-                                sig_sta,
-                            ]))
+                            self.stdout.write(
+                                " ".join(
+                                    [
+                                        idn,
+                                        gubn,
+                                        gubn_nam,
+                                        mea_ymd,
+                                        remark,
+                                        mea_wal,
+                                        sig_sta,
+                                    ]
+                                )
+                            )
                         sewer, is_created = Sewer.objects.get_or_create(
                             idn=idn,
                             gubn=gubn,

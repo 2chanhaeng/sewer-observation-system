@@ -32,7 +32,9 @@ class Rainguage(models.Model):
 
 
 class Rainfall(models.Model):
-    rainguage = models.ForeignKey(Rainguage, on_delete=models.CASCADE, verbose_name="강우량계")
+    rainguage = models.ForeignKey(
+        Rainguage, on_delete=models.CASCADE, verbose_name="강우량계"
+    )
     rainfall10 = models.FloatField(verbose_name="10분우량")
     recieve_time = models.DateTimeField(verbose_name="자료수집 시각")
 
