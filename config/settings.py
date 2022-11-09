@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = [
 ]
 
 CUSTOM_APPS = [
+    "data.apps.DataConfig",
 ]
 
 INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOM_APPS

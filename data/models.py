@@ -1,10 +1,18 @@
 from django.db import models
 
 
+class Gu(models.Model):
+    name = models.CharField(max_length=8, verbose_name="구청명", unique=True)
+    code = models.SmallIntegerField(verbose_name="구청 코드", unique=True, null=True)
+    gubn = models.CharField(max_length=2, verbose_name="구분코드", unique=True, null=True)
+
+    def __str__(self):
+        return f"{self.name}-gu"
+
+
 class Sewer(models.Model):
     idn = models.CharField(max_length=8, verbose_name="고유번호")
-    gubn = models.CharField(max_length=4, verbose_name="구분코드")
-    gubn_nam = models.CharField(max_length=4, verbose_name="구분명")
+    gu = models.ForeignKey(Gu, on_delete=models.CASCADE, verbose_name="구청")
     remark = models.CharField(max_length=255, verbose_name="위치정보")
 
     def __str__(self):
@@ -24,15 +32,16 @@ class Sewage(models.Model):
 class Rainguage(models.Model):
     rainguage_code = models.SmallIntegerField(verbose_name="강우량계 코드")
     rainguage_name = models.CharField(max_length=8, verbose_name="강우량계명")
-    gu_code = models.SmallIntegerField(verbose_name="구청 코드")
-    gu_name = models.CharField(max_length=8, verbose_name="구청명")
+    gu = models.ForeignKey(Gu, on_delete=models.CASCADE, verbose_name="구청")
 
     def __str__(self):
         return f"Rainguage {self.rainguage_code} ({self.rainguage_name})"
 
 
 class Rainfall(models.Model):
-    rainguage = models.ForeignKey(Rainguage, on_delete=models.CASCADE, verbose_name="강우량계")
+    rainguage = models.ForeignKey(
+        Rainguage, on_delete=models.CASCADE, verbose_name="강우량계"
+    )
     rainfall10 = models.FloatField(verbose_name="10분우량")
     recieve_time = models.DateTimeField(verbose_name="자료수집 시각")
 
