@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 from data.models import Rainguage, Rainfall, Sewer, Sewage
 from datetime import datetime
 
+KST = " +09:00"
 rainguage_dir = Path("./seed_data/rainguage").absolute()
 sewer_dir = Path("./seed_data/sewer").absolute()
 
@@ -25,7 +26,6 @@ class Command(BaseCommand):
     help = "Closes the specified poll for voting"
 
     def handle(self, *args, **options):
-        """
         for data_csv in rainguage_csvs:
             with open(data_csv, "r", encoding="euc-kr") as f:
                 reader = csv.reader(f)
@@ -33,6 +33,9 @@ class Command(BaseCommand):
                 prev_day = 0
                 for rg_code, rg_name, gu_code, gu_name, rf, rt in reader:
                     try:
+                        if prev_day == 0:
+                            row = [rg_code, rg_name, gu_code, gu_name, rf, rt]
+                            self.stdout.write(" ".join(row))
                         rg, is_created = Rainguage.objects.get_or_create(
                             rainguage_code=rg_code,
                             rainguage_name=rg_name,
@@ -56,7 +59,6 @@ class Command(BaseCommand):
                             prev_day = today
                     except Exception as e:
                         self.stdout.write(self.style.ERROR(f"error: {e}"))
-        """
         for data_csv in [sewer_csvs[0]]:
             with open(data_csv, "r", encoding="euc-kr") as f:
                 reader = csv.reader(f)
@@ -72,19 +74,8 @@ class Command(BaseCommand):
                 for idn, gubn, gubn_nam, mea_ymd, remark, mea_wal, sig_sta in reader:
                     try:
                         if prev_day == 0:
-                            self.stdout.write(
-                                " ".join(
-                                    [
-                                        idn,
-                                        gubn,
-                                        gubn_nam,
-                                        mea_ymd,
-                                        remark,
-                                        mea_wal,
-                                        sig_sta,
-                                    ]
-                                )
-                            )
+                            row = [idn, gubn, gubn_nam, mea_ymd, remark, mea_wal, sig_sta]
+                            self.stdout.write(" ".join(row))
                         sewer, is_created = Sewer.objects.get_or_create(
                             idn=idn,
                             gubn=gubn,
@@ -98,7 +89,7 @@ class Command(BaseCommand):
                     try:
                         Sewage.objects.create(
                             sewer=sewer,
-                            mea_ymd=mea_ymd + " +09:00",
+                            mea_ymd=mea_ymd + KST,
                             mea_wal=mea_wal,
                             sig_sta=sig_sta,
                         )
