@@ -18,9 +18,17 @@ API_URL_SEWAGE = API_URL_BASE + "{}/json/DrainpipeMonitoringInfo/{}/{}/{}/{}/{}/
 API_URL_RAINFALL = API_URL_BASE + "{}/json/ListRainfallService/{}/{}/{}/"
 
 
-def req(url: str, *formats) -> dict:
-    res = requests.get(url.format(API_KEY, *formats))
-    return res.json()
+def req(url: str, *formats) -> SuccessedResponse | FailedResponse:
+    """
+    URL에 인자와 API 키를 넣어서 요청을 보내 응답을 반환.
+    """
+    res = requests.get(url.format(env("SEOUL_OPEN_API_KEY"), *formats))
+    if res.status_code != 200:
+        return {}
+    try:
+        return res.json()
+    except Exception:
+        return {}
 
 
 # 정해진 기간 동안의 강수량을 반환하는 API
